@@ -3,32 +3,40 @@ UI menu.c32
 # Prompt user for selection
 PROMPT 0
 TIMEOUT 300
-{% if item.ontimeout is defined %}
+{% if item.on_timeout is defined %}
 ONTIMEOUT {{item.on_timeout}}
 {% endif %}
 
 # Menu
 {% if item.menu_background is defined %}
-MENU background {{item.menu_background}}
+menu background {{item.menu_background}}
 {% endif %}
 {% if item.menu_title is defined %}
-MENU title {{item.menu_title}}
+menu title {{item.menu_title}}
 {% endif %}
 {% if item.menu_colors is defined %}
-{% for mc in item.menu_colors %}
-menu color {{mc.area}} {{mc.i}} {{mc.fg}} {{mc.bg}}
+{% for param in item.menu_colors %}
+menu color {{param}}
 {% endfor %}
 {% endif %}
 
 {% for l in item.labels %}
-LABEL {{loop.index}}
-{% if l.default is defined and image.default == true %}
+
+LABEL {{l.label}}
+  MENU LABEL {{l.desc}}
+{% if l.default is defined %}
   MENU DEFAULT
 {% endif %}
-  MENU LABEL ^{{loop.index}}) {{l.label}}
+{% if l.kernel is defined %}
   KERNEL {{l.kernel}}
+{% endif %}
+{% if l.append is defined %}
   APPEND {{l.append}}
+{% endif %}
 {% if l.ipappend is defined %}
   IPAPPEND {{l.ipappend}}
+{% endif %}
+{% if l.localboot is defined and l.localboot %}
+  LOCALBOOT 0
 {% endif %}
 {% endfor %}
