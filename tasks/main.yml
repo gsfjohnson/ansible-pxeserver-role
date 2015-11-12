@@ -2,8 +2,8 @@
 
 - name: install pkg
   yum:
-    pkg: "{{ item }}"
-    state: pxeserver_pkg_state
+    pkg={{item}}
+    state={{pxeserver_pkg_state}}
   with_items: pxeserver_pkg_names
 
 - name: start, enable svcs
@@ -23,7 +23,7 @@
 - name: pull in bootstrap files
   command: cp "{{item}}" "{{pxeserver_path}}/{{item|regex_replace('.*/', '')}}"
   args:
-    creates={{pxeserver_path}}/{{item|regex_replace('.*/', '')}}
+    creates: "{{pxeserver_path}}/{{item|regex_replace('.*/', '')}}"
   with_items: pxeserver_files
   tags: pxeserver
 
@@ -40,7 +40,7 @@
   with_items: pxeserver_images
   tags: pxeserver
 
-- name: install pxeboot kernel, initrd, etc
+# - name: install pxeboot kernel, initrd, etc
 
 - name: create menus
   template:

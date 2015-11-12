@@ -1,9 +1,9 @@
 ---
 
-pxeserver_pkg_names:
-  - syslinx
-  - syslinux-nonlinux
 pxeserver_pkg_state: installed
+pxeserver_pkg_names:
+  - syslinux
+  - syslinux-nonlinux
 
 pxeserver_svc_names: []
 pxeserver_svc_state: started
