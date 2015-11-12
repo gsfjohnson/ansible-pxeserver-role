@@ -1,0 +1,51 @@
+---
+
+- name: install pkg
+  yum:
+    pkg: "{{ item }}"
+    state: pxeserver_pkg_state
+  with_items: pxeserver_pkg_names
+
+- name: start, enable svcs
+  service:
+    name={{item}}
+    state={{pxeserver_svc_state}}
+    enabled={{pxeserver_svc_enabled}}
+  with_items: pxeserver_svc_names
+  tags: pxeserver
+
+- name: create pxeboot dir
+  file:
+    path={{pxeserver_path}}
+    state=directory
+  tags: pxeserver
+
+- name: pull in bootstrap files
+  command: cp "{{item}}" "{{pxeserver_path}}/{{item|regex_replace('.*/', '')}}"
+  args:
+    creates={{pxeserver_path}}/{{item|regex_replace('.*/', '')}}
+  with_items: pxeserver_files
+  tags: pxeserver
+
+- name: create pxelinux.cfg dir
+  file:
+    path={{pxeserver_path}}/pxelinux.cfg
+    state=directory
+  tags: pxeserver
+
+- name: create boot image directories
+  file:
+    path={{pxeserver_path}}/{{item.name}}
+    state=directory
+  with_items: pxeserver_images
+  tags: pxeserver
+
+- name: install pxeboot kernel, initrd, etc
+
+- name: create menus
+  template:
+    src=pxelinux.cfg.j2
+    dest={{pxeserver_path}}/pxelinux.cfg/{{item.file}}
+  with_items: pxeserver_menus
+  tags: pxeserver
+

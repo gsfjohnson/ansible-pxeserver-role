@@ -1,0 +1,20 @@
+---
+
+pxeserver_pkg_names:
+  - syslinx
+  - syslinux-nonlinux
+pxeserver_pkg_state: installed
+
+pxeserver_svc_names: []
+pxeserver_svc_state: started
+pxeserver_svc_enabled: true
+
+pxeserver_path: /var/lib/tftpboot
+pxeserver_ip: "{{ ansible_default_ipv4.address }}"
+
+pxeserver_files:
+  - /usr/share/syslinux/pxelinux.0
+  - /usr/share/syslinux/menu.c32
+
+pxeserver_menus: []
+
